@@ -15,7 +15,6 @@ version '1.0-SNAPSHOT'
 
 sourceSets {
     main.kotlin.srcDirs = ['src/main']
-    test.kotlin.srcDirs = ['src/test']
 }
 
 repositories {

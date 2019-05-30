@@ -14,12 +14,8 @@ At the time of creating this project, there was no complete Kotlin JavaScript tu
 1. Assemble.
     - Windows: `gradle.bat assemble`
     - Other: `./gradlew assemble`
+1. Run the first step again.
 1. Open `web/index.html` in your browser.
-
-## Testing
-
-- Windows: `gradle.bat test`
-- Other: `./gradlew test`
 
 ## Credits
 
