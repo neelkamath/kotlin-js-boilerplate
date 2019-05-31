@@ -41,14 +41,14 @@ if ('assemble' in gradle.startParameter.taskNames) {
 }
 
 task copyTask(type: Copy) {
-    from("$projectDir/src/main/resources")
-    into("$projectDir/web")
+    from "$projectDir/src/main/resources"
+    into "$projectDir/web"
 }
 
 task assembleWeb(type: Sync) {
     configurations.compile.each { File file ->
         from(zipTree(file.absolutePath), {
-            includeEmptyDirs = false
+            includeEmptyDirs false
             include { fileTreeElement ->
                 def path = fileTreeElement.path
                 path.endsWith('.js') && (path.startsWith('META-INF/resources/') ||
@@ -75,7 +75,7 @@ node { download = true }
 task installJest(type: NpmTask) { args = ['install', 'jest'] }
 
 task runJest(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModules, installJest]) {
-    script = file('node_modules/jest/bin/jest.js')
+    script file('node_modules/jest/bin/jest.js')
     args = [projectDir.toURI().relativize(compileTestKotlin2Js.outputFile.toURI())]
 }
 
