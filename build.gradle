@@ -1,0 +1,82 @@
+buildscript {
+    ext.kotlin_version = '1.2.21'
+    repositories {
+        mavenCentral()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+    }
+}
+
+apply plugin: 'kotlin2js'
+apply plugin: 'com.moowork.node'
+
+group 'com.example.kotlinjsboilerplate'
+version '1.0-SNAPSHOT'
+
+sourceSets {
+    main.kotlin.srcDirs = ['src/main']
+    test.kotlin.srcDirs = ['src/test']
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    testCompile 'org.jetbrains.kotlin:kotlin-test-js'
+}
+
+if ('test' in gradle.startParameter.taskNames) {
+    [compileKotlin2Js, compileTestKotlin2Js]*.configure { kotlinOptions.moduleKind = 'commonjs' }
+    sourceSets.main.kotlin.exclude 'App.kt'
+}
+
+if ('assemble' in gradle.startParameter.taskNames) {
+    compileKotlin2Js {
+        kotlinOptions.outputFile = "$projectDir/web/output.js"
+        kotlinOptions.sourceMap = true
+    }
+}
+
+task copyTask(type: Copy) {
+    from("$projectDir/src/main/resources")
+    into("$projectDir/web")
+}
+
+task assembleWeb(type: Sync) {
+    configurations.compile.each { File file ->
+        from(zipTree(file.absolutePath), {
+            includeEmptyDirs = false
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith('.js') && (path.startsWith('META-INF/resources/') ||
+                        !path.startsWith('META-INF/'))
+            }
+        })
+    }
+    from compileKotlin2Js.destinationDir
+    into "$projectDir/web"
+    dependsOn classes
+}
+
+assemble.dependsOn copyTask
+assemble.dependsOn assembleWeb
+
+task populateNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
+   from compileKotlin2Js.destinationDir
+   configurations.testCompile.each { from zipTree(it.absolutePath).matching { include '*.js' } }
+   into "$buildDir/node_modules"
+}
+
+node { download = true }
+
+task installJest(type: NpmTask) { args = ['install', 'jest'] }
+
+task runJest(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModules, installJest]) {
+    script = file('node_modules/jest/bin/jest.js')
+    args = [projectDir.toURI().relativize(compileTestKotlin2Js.outputFile.toURI())]
+}
+
+test.dependsOn runJest

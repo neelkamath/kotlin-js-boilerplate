@@ -1,0 +1,5 @@
+/* Make media responsive. */
+img, video {
+    height: auto;
+    max-width: 100%;
+}
