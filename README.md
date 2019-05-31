@@ -1,6 +1,6 @@
 # Kotlin JS Boilerplate
 
-At the time of creating this project, there was no complete Kotlin JavaScript tutorial. This boilerplate was created to help set up conventional unopinionated Kotlin JavaScript projects by using HTML, CSS, Kotlin JavaScript, and Gradle.
+At the time of creating this project, there were no up-to-date complete Kotlin JavaScript tutorials. This boilerplate was created to help set up conventional unopinionated Kotlin JavaScript projects by using HTML, CSS, Kotlin JavaScript, tests, and Gradle.
 
 ## Installation
 
@@ -17,9 +17,15 @@ At the time of creating this project, there was no complete Kotlin JavaScript tu
 1. Run the first step again.
 1. Open `web/index.html` in your browser.
 
+## Testing
+
+- Windows: `gradle.bat test`
+- Other: `./gradlew test`
+
 ## Credits
 
 - [Kotlin JS Starter](https://github.com/cvoegtle/kotlin-js-starter)
+- [Kotlin JS Jest Example](https://github.com/Kotlin/kotlin-examples/tree/master/gradle/js-tests/jest)
 
 ## License
 

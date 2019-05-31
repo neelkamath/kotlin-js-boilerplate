@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
             val num1 = getInt("num1")
             val num2 = getInt("num2")
             val answer = document.getElementById("answer")!!
-            answer.textContent = if (num1 == null || num2 == null) "Invalid input" else (num1 + num2).toString()
+            answer.textContent = if (num1 == null || num2 == null) "Invalid input" else calculate(num1, num2).toString()
         })
     }
 }
