@@ -40,7 +40,7 @@ if ('assemble' in gradle.startParameter.taskNames) {
     }
 }
 
-task copyTask(type: Copy) {
+task copyResources(type: Copy) {
     from "$projectDir/src/main/resources"
     into "$projectDir/web"
 }
@@ -61,7 +61,7 @@ task assembleWeb(type: Sync) {
     dependsOn classes
 }
 
-assemble.dependsOn copyTask
+assemble.dependsOn copyResources
 assemble.dependsOn assembleWeb
 
 task populateNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
