@@ -14,7 +14,6 @@ apply plugin: 'kotlin2js'
 apply plugin: 'com.moowork.node'
 
 group 'com.example.kotlinjsboilerplate'
-version '1.0-SNAPSHOT'
 
 sourceSets {
     main.kotlin.srcDirs = ['src/main']
